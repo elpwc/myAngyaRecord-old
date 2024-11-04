@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My行脚記録</title>
+  <link rel="stylesheet" type="text/css" href="./static/main.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <!-- Make sure you put this AFTER Leaflet's CSS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head>
+
+<body>
+
+  <header>
+
+    <div id="title">
+      My行脚記録
+    </div>
+
+    <menu id="regionMenu">
+      <div class="regionMenuItem">
+        <a href="/" onclick="">
+          日本
+        </a>
+      </div>
+      <div class="regionMenuItem">
+        <a href="/" onclick="alert('coming soon')">
+
+          韓国
+        </a>
+      </div>
+      <div class="regionMenuItem">
+        <a href="/" onclick="alert('coming soon')">
+          中国大陸
+        </a>
+      </div>
+      <div class="regionMenuItem">
+        <a href="/" onclick="alert('coming soon')">
+          台湾
+        </a>
+      </div>
+    </menu>
+  </header>
+  <main>
+    <div style="padding: 20px 0; display: flex; flex-direction: row; gap: 10px;">
+
+      <label for="shichousonkuCheckbox"><input type="checkbox" id="shichousonkuCheckbox" name="shichousonku" checked
+          onchange="layerControlCheckBox_onChange()" />市町村区表示</label>
+
+      <label for="sinkoukyokuCheckbox"><input type="checkbox" id="sinkoukyokuCheckbox" name="sinkoukyoku" checked
+          onchange="layerControlCheckBox_onChange()" />北海道を支庁で表示</label>
+      <label for="placenameCheckbox"><input type="checkbox" id="placenameCheckbox" name="placename" checked
+          onchange="layerControlCheckBox_onChange()" />地名表示</label>
+      <label for="railwaysCheckbox"><input type="checkbox" id="railwaysCheckbox" name="railways"
+          onchange="layerControlCheckBox_onChange()" />全国鉄道路線</label>
+
+    </div>
+    <div>
+      <div id="map"></div>
+    </div>
+  </main>
+
+
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="./geojson/japan/todofukenFiles.js"></script>
+
+  <script src="./static/main.js"></script>
+</body>
+
+</html>

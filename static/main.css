@@ -1,0 +1,99 @@
+svg {
+	border: 1px solid rgb(192, 192, 192);
+	border-radius: 5px;
+	background-color: #dcf6ff;
+}
+
+.region {
+	fill: rgba(0, 128, 255, 0.3);
+	cursor: pointer;
+}
+
+.region:hover {
+	fill: rgba(0, 255, 128, 0.5);
+	stroke: red;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+header {
+	height: fit-content;
+	width: 100%;
+	background-color: #238551;
+	color: white;
+	padding: 5px;
+	box-shadow: 0 0 black;
+	display: flex;
+}
+
+#title {
+	padding: 0 10px;
+}
+
+#regionMenu {
+	display: flex;
+	gap: 10px;
+}
+
+.regionMenuItem {
+	padding: 0 10px;
+}
+
+.regionMenuItem a {
+	color: white;
+}
+
+main {
+}
+
+#leftBar {
+	display: flex;
+	flex-direction: column;
+	padding: 0 10px;
+}
+
+button {
+	background-color: white;
+	color: black;
+	border-color: gray;
+	border-width: 1px;
+}
+
+.mapControlButton {
+	min-width: 30px;
+	min-height: 30px;
+	border-radius: 8px;
+	font-size: 20px;
+}
+
+#map {
+	height: 1000px;
+}
+
+.shichousonlabel {
+	text-align: center;
+}
+
+.popup {
+}
+
+.popuproute {
+	color: gray;
+}
+
+.popuptitle {
+	font-size: larger;
+	font-weight: bold;
+}
+
+.popupbuttoncontainer {
+	display: flex;
+	flex-direction: column;
+}
+
+.popupbutton {
+	cursor: pointer;
+}

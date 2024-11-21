@@ -58,8 +58,14 @@ main {
 button {
 	background-color: white;
 	color: black;
+	border-width: 0;
+	font-size: 20px;
+	padding: 10px 5px;
 	border-color: gray;
 	border-width: 1px;
+	min-width: fit-content;
+	border-radius: 5px;
+	box-shadow: 0px 0px #ffffff;
 }
 
 .mapControlButton {
@@ -85,15 +91,21 @@ button {
 }
 
 .popuptitle {
-	font-size: larger;
+	font-size: 20px;
 	font-weight: bold;
 }
 
 .popupbuttoncontainer {
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
+	gap: 5px;
+	width: max-content;
 }
 
 .popupbutton {
 	cursor: pointer;
+}
+
+.chichosonLabel{
+	font-size: 10px;
 }

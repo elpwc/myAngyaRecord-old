@@ -3,7 +3,6 @@ let geojsonData;
 
 var map = L.map('map').setView([31.85889704445453, 132.31933593750003], 5);
 
-// 定义默认样式和悬停样式
 const prefDefaultStyle = { fillColor: '#ffffff00', opacity: 1, fillOpacity: 1, weight: 1, color: 'darkred' };
 
 const mapStyles = [
@@ -51,31 +50,28 @@ const loadPrefGeoJson = (GeoJsonFileName) => {
 		.then((response) => response.json())
 		.then((data) => {
 			geojsonData = data;
-			// 继续处理 geojsonData
+			// geojsonData
 			L.geoJSON(geojsonData, {
 				style: function (feature) {
 					return prefDefaultStyle;
 				},
 				onEachFeature: function (feature, layer) {
 					if (showPlaceNames) {
-						// 创建地名标签
+						// placename
 						const clickedObject = feature;
 						const pref_name = clickedObject.properties.name;
 						const label = L.marker(layer.getBounds().getCenter(), {
 							icon: L.divIcon({
-								className: 'shichousonlabel', // 添加自定义样式类
+								className: 'shichousonlabel',
 								html: pref_name,
-								iconSize: [100, 20], // 标签大小
+								iconSize: [100, 20],
 							}),
-							interactive: false, // 禁止交互，以避免影响鼠标事件
+							interactive: false,
 						});
 
-						// 将标签添加到图层并控制其显示
 						label.addTo(map);
 
-						// 初始时隐藏标签
 						if (map.getZoom() >= 8) {
-							// 设置你想要的显示级别
 							label.getElement().style.display = 'none';
 						}
 
@@ -83,17 +79,20 @@ const loadPrefGeoJson = (GeoJsonFileName) => {
 							label.getElement().style.display = 'none';
 						}
 
-						// 当地图缩放时控制标签的显示和隐藏
 						map.on('zoomend', function () {
 							if (showPlaceNames) {
 								if (map.getZoom() < 8) {
 									if (!showPlaceNames) {
 										label.getElement().style.display = 'none';
 									} else {
-										label.getElement().style.display = 'block';
+										if (label.getElement()) {
+											label.getElement().style.display = 'block';
+										}
 									}
 								} else {
-									label.getElement().style.display = 'none';
+									if (label.getElement()) {
+										label.getElement().style.display = 'none';
+									}
 								}
 							}
 						});
@@ -114,7 +113,7 @@ const loadShichosonGeoJson = (GeoJsonFileName, prefName) => {
 		.then((response) => response.json())
 		.then((data) => {
 			geojsonData = data;
-			// 继续处理 geojsonData
+			// geojsonData
 			L.geoJSON(geojsonData, {
 				attribution: prefName,
 				style: function (feature) {
@@ -128,24 +127,21 @@ const loadShichosonGeoJson = (GeoJsonFileName, prefName) => {
 					const shichosonku_name = clickedObject.properties.N03_004;
 					const jichitai_index = clickedObject.properties.N03_007;
 
-					// 着色
 					const angya = getAngya(jichitai_index);
 					const shichosonDefaultStyle = { fillColor: mapStyles[currentMapStyle].bgcolor[angya], color: 'black', opacity: 1, fillOpacity: 1, weight: 0.35 };
 					const hoverStyle = { fillColor: mapStyles[currentMapStyle].bgcolor[angya], color: 'blue', opacity: 1, fillOpacity: 1, weight: 1.5 };
 
 					layer.setStyle(shichosonDefaultStyle);
 
-					// 鼠标悬停时应用 hover 样式
 					layer.on('mouseover', function () {
 						layer.setStyle(hoverStyle);
 					});
 
-					// 鼠标移出时恢复默认样式
 					layer.on('mouseout', function () {
 						layer.setStyle(shichosonDefaultStyle);
 					});
 
-					// 创建地名标签
+					// placename
 					// 政令市
 					let title = shichosonku_name;
 					if (gun_seireishi_shicho_name !== null) {
@@ -157,19 +153,16 @@ const loadShichosonGeoJson = (GeoJsonFileName, prefName) => {
 					}
 					const label = L.marker(layer.getBounds().getCenter(), {
 						icon: L.divIcon({
-							className: 'shichousonlabel', // 添加自定义样式类
+							className: 'shichousonlabel',
 							html: `<span class='chichosonLabel' style="color: ${mapStyles[currentMapStyle].color[angya]}">${title}</span>`,
-							iconSize: [100, 20], // 标签大小
+							iconSize: [100, 20],
 						}),
-						interactive: false, // 禁止交互，以避免影响鼠标事件
+						interactive: false,
 					});
 
-					// 将标签添加到图层并控制其显示
 					label.addTo(map);
 
-					// 初始时隐藏标签
 					if (map.getZoom() < 8) {
-						// 设置你想要的显示级别
 						label.getElement().style.display = 'none';
 					}
 
@@ -177,17 +170,20 @@ const loadShichosonGeoJson = (GeoJsonFileName, prefName) => {
 						label.getElement().style.display = 'none';
 					}
 
-					// 当地图缩放时控制标签的显示和隐藏
 					map.on('zoomend', function () {
 						if (showPlaceNames) {
 							if (map.getZoom() >= 8) {
 								if (!showPlaceNames) {
 									label.getElement().style.display = 'none';
 								} else {
-									label.getElement().style.display = 'block';
+									if (label.getElement()) {
+										label.getElement().style.display = 'block';
+									}
 								}
 							} else {
-								label.getElement().style.display = 'none';
+								if (label.getElement()) {
+									label.getElement().style.display = 'none';
+								}
 							}
 						}
 					});
@@ -243,7 +239,7 @@ const loadShichosonGeoJson = (GeoJsonFileName, prefName) => {
 };
 
 /**
- * 加载铁道
+ * railway
  */
 const loadRailways = () => {
 	fetch('./geojson/japan/railways.geojson')

@@ -3,14 +3,15 @@ let geojsonData;
 
 var map = L.map('map').setView([31.85889704445453, 132.31933593750003], 5);
 
-const prefDefaultStyle = { fillColor: '#ffffff00', opacity: 1, fillOpacity: 1, weight: 1, color: 'darkred' };
+const prefDefaultStyle = { fillColor: '#ffffff00', opacity: 1, fillOpacity: 1, weight: 1, color: 'black' };
 
 const mapStyles = [
 	{ name: 'classic', bgcolor: ['#d646d6', '#ff3d3d', '#ffa136', '#50ff50', '#bef7ff', 'white'], color: ['black', 'black', 'black', 'black', 'black', 'black'] },
-	{ name: 'red', bgcolor: ['#d646d6', '#ff3d3d', '#ffa136', '#50ff50', '#bef7ff', 'white'], color: ['black', 'black', 'black', 'black', 'black', 'black'] },
+	{ name: 'light', bgcolor: ['#ffabff', '#ff8686', '#ffdf72', '#a5ffa5', '#ceeaff', 'white'], color: ['black', 'black', 'black', 'black', 'black', 'black'] },
+	{ name: 'dark', bgcolor: ['#d646d6', '#ff3d3d', '#faa429', '#43dd43', '#72c4ff', 'white'], color: ['black', 'black', 'black', 'black', 'black', 'black'] },
 ];
 
-let currentMapStyle = 0;
+let currentMapStyle = 2;
 
 let showShinkoukyoku = true;
 let showPlaceNames = true;
@@ -45,13 +46,14 @@ const updateAngya = (jichitai_index, angya, prefname) => {
  * 加载pref
  * @param {*} GeoJsonFileName
  */
-const loadPrefGeoJson = (GeoJsonFileName) => {
+const loadPrefGeoJson = (GeoJsonFileName, name) => {
 	fetch(GeoJsonFileName)
 		.then((response) => response.json())
 		.then((data) => {
 			geojsonData = data;
 			// geojsonData
 			L.geoJSON(geojsonData, {
+				attribution: name,
 				style: function (feature) {
 					return prefDefaultStyle;
 				},
@@ -248,9 +250,10 @@ const loadRailways = () => {
 			geojsonData = data;
 			console.log(geojsonData);
 			L.geoJSON(geojsonData, {
+				attribution: 'railways',
 				style: function (feature) {
 					if (feature.properties.name.includes('旅客')) {
-						return { weight: 1.5, color: 'black', opacity: 1, fillOpacity: 1 };
+						return { weight: 1.5, color: 'darkred', opacity: 1, fillOpacity: 1 };
 					} else {
 						return { weight: 1, color: 'blue', opacity: 1, fillOpacity: 1 };
 					}
@@ -272,19 +275,36 @@ const refresh = () => {
 	if (showRailways) {
 		loadRailways();
 	}
-	loadPrefGeoJson('./geojson/japan/prefectures.geojson');
+
+	loadPrefGeoJson('./geojson/japan/prefectures.geojson', 'pref');
 
 	if (showShinkoukyoku) {
-		loadPrefGeoJson('./geojson/japan/hokkaido-branch.geojson');
+		loadPrefGeoJson('./geojson/japan/hokkaido-branch.geojson', 'hokkaido_shinkoukyoku');
 	}
 };
 
+const delLayer = (name) => {
+	if (typeof name === 'string') {
+		map.eachLayer(function (layer) {
+			if (layer.getAttribution() === name) {
+				map.removeLayer(layer);
+			}
+		});
+	} else {
+		map.eachLayer(function (layer) {
+			if (name.includes(layer.getAttribution())) {
+				map.removeLayer(layer);
+			}
+		});
+	}
+};
+
+/**
+ * 刷新一个pref的json
+ * @param {*} refreshTarget
+ */
 const refreshSinglePref = (refreshTarget = '') => {
-	map.eachLayer(function (layer) {
-		if (layer.getAttribution() === refreshTarget) {
-			map.removeLayer(layer);
-		}
-	});
+	delLayer([refreshTarget, 'pref']);
 	const refreshTargetIndex = todofukenFiles.findIndex((pref) => {
 		console.log(pref);
 		return pref[0] === refreshTarget;
@@ -292,6 +312,18 @@ const refreshSinglePref = (refreshTarget = '') => {
 	console.log(refreshTargetIndex);
 	if (refreshTargetIndex !== -1) {
 		loadShichosonGeoJson('./geojson/japan/todofuken/' + todofukenFiles[refreshTargetIndex][1], todofukenFiles[refreshTargetIndex][0]);
+	}
+
+	if (showRailways) {
+		delLayer('railways');
+		loadRailways();
+	}
+
+	loadPrefGeoJson('./geojson/japan/prefectures.geojson', 'pref');
+
+	if (showShinkoukyoku) {
+		delLayer('hokkaido_shinkoukyoku');
+		loadPrefGeoJson('./geojson/japan/hokkaido-branch.geojson', 'hokkaido_shinkoukyoku');
 	}
 };
 

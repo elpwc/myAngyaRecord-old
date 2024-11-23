@@ -81,6 +81,7 @@ button {
 
 .shichousonlabel {
 	text-align: center;
+	font-size: 12px;
 }
 
 .popup {
@@ -104,8 +105,4 @@ button {
 
 .popupbutton {
 	cursor: pointer;
-}
-
-.chichosonLabel{
-	font-size: 10px;
 }

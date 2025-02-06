@@ -3,7 +3,7 @@ let geojsonData;
 
 var map = L.map('map').setView([31.85889704445453, 132.31933593750003], 5);
 
-const prefDefaultStyle = { fillColor: '#ffffff00', opacity: 1, fillOpacity: 1, weight: 1, color: 'black' };
+const prefDefaultStyle = { fillColor: '#ffffff00', opacity: 1, fillOpacity: 1, weight: 0.7, color: 'black' };
 
 const mapStyles = [
 	{ name: 'classic', bgcolor: ['#d646d6', '#ff3d3d', '#ffa136', '#50ff50', '#bef7ff', 'white'], color: ['black', 'black', 'black', 'black', 'black', 'black'] },
@@ -271,6 +271,7 @@ const refresh = () => {
 	todofukenFiles.forEach((todofukenFile) => {
 		loadShichosonGeoJson('./geojson/japan/todofuken/' + todofukenFile[1], todofukenFile[0]);
 	});
+	loadShichosonGeoJson('./geojson/japan/numazu.geojson');
 
 	if (showRailways) {
 		loadRailways();
